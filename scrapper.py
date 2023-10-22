@@ -11,7 +11,7 @@ from selenium.webdriver.common.by import By
 url = "https://www.pokecardex.com/series"
 
 def setup_driver():
-    s = Service("/Users/enzoleonardo/chromedriver/chromedriver")
+    s = Service("C:/Users/enzol/chromedriver/chromedriver.exe")
 
     useragent = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 "
                  "Safari/537.36")
@@ -39,8 +39,8 @@ def setup_driver():
 def get_cards(serie, driver):
     print(serie.text)
 
-    if not os.path.exists(f'data/raw/{serie.text}'):
-        os.makedirs(f"data/raw/{serie.text}")
+    if not os.path.exists(f'data/raw_HD/{serie.text}'):
+        os.makedirs(f"data/raw_HD/{serie.text}")
 
     xpath = f'//*[@id="{serie.text}"]/div/div/div'
     container = driver.find_element(By.XPATH, xpath)
@@ -76,14 +76,16 @@ def get_cards(serie, driver):
 
                 filename = src.split("/")[-1]
 
-                if not os.path.exists(f'data/raw/{serie.text}/{set_name}'):
-                    os.makedirs(f'data/raw/{serie.text}/{set_name}')                
+                if not os.path.exists(f'data/raw_HD/{serie.text}/{set_name}'):
+                    os.makedirs(f'data/raw_HD/{serie.text}/{set_name}')                
 
                 # Save image in directory
                 
-                r = requests.get(src, allow_redirects=True)
+                hd_src = '/'.join(src.split("/")[0:-1]) + "/HD/" + src.split("/")[-1]
 
-                open(f'data/raw/{serie.text}/{set_name}/{filename}', "wb").write(r.content)
+                r = requests.get(hd_src, allow_redirects=True)
+
+                open(f'data/raw_HD/{serie.text}/{set_name}/{filename}', "wb").write(r.content)
                 
             except:
                 print("No src attribute found")
