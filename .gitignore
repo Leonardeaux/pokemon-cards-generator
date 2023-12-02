@@ -1,4 +1,5 @@
+.gitignore
 .env
 /data
 /output_images
-/app/pokemon_cards
+/openai_app/pokemon_cards
